@@ -18,6 +18,7 @@ public class TourDAO {
 		conn = DBUtil.open();
 	}
 	
+<<<<<<< HEAD
 	
 	/**
 	 * 
@@ -27,10 +28,14 @@ public class TourDAO {
 	 * @param seq 
 	 * @return ArrayList<TourDTO> 관광명소 list
 	 */
+=======
+	// 여행장소 목록을 가져오는 메소드
+>>>>>>> b1c00ab079a27d5a2d137c7ff4b96ad33f4530de
 	public ArrayList<TourDTO> getTourlist(String seq) {
 
 		try {
 			
+<<<<<<< HEAD
 			String sql = "select\r\n"
 					   + "       t.seq, \r\n"
 					   + "       t.placename, \r\n"
@@ -75,6 +80,11 @@ public class TourDAO {
 			}
 			
 			return list;
+=======
+			String sql = "";
+			
+			
+>>>>>>> b1c00ab079a27d5a2d137c7ff4b96ad33f4530de
 			
 		} catch (Exception e) {
 			System.out.println("TourDAO.getTourlist");
