@@ -14,5 +14,8 @@ public class UserDTO {
 	private String profile;
 	private String regdate;
 	private String active;
+	private String loginmode;
 	
+
+
 }

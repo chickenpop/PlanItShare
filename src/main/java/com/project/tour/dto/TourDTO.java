@@ -1,6 +1,5 @@
 package com.project.tour.dto;
 
-<<<<<<< HEAD
 import lombok.Data;
 
 @Data
@@ -19,8 +18,3 @@ public class TourDTO {
 	private String reviewAvg;
 	
 }
-=======
-public class TourDTO {
-
-}
->>>>>>> b1c00ab079a27d5a2d137c7ff4b96ad33f4530de
