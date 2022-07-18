@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.project.tour.dto.AdminDTO;
 import com.project.tour.dto.TourDTO;
+import com.project.tour.dto.TourLikeDTO;
 import com.project.tour.dto.TourReviewDTO;
 import com.project.tour.dto.UserDTO;
 
@@ -41,9 +42,27 @@ public class TourView extends HttpServlet {
 		TourSeq.setSeq(seq);
 		TourSeq.setCseq(cseq);
 		
+		int state = 0;
+		
+		// 관심등록여부
+		if(session.getAttribute("auth") != null) {
+			
+			UserDTO udto = (UserDTO)session.getAttribute("auth");
+		
+			dao = new TourDAO();
+			
+			TourLikeDTO tldto = new TourLikeDTO();
+					
+			tldto.setId(udto.getId());
+			tldto.setTseq(seq);
+			
+			state = dao.isTourlike(tldto);
+		} 
+		
 		req.setAttribute("sdto", TourSeq);
 		req.setAttribute("dto", dto);
 		req.setAttribute("rlist", rlist);
+		req.setAttribute("state", state);
 		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/city/tour/tourview.jsp");
 

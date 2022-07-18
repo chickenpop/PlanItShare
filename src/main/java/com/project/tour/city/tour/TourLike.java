@@ -38,6 +38,8 @@ public class TourLike extends HttpServlet {
 			UserDTO userDTO = (UserDTO)session.getAttribute("auth");
 			String id = userDTO.getId();
 			dto.setId(id);
+		} else {
+			return;
 		}
 		
 		dto.setTseq(seq);

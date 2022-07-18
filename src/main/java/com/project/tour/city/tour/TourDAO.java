@@ -435,9 +435,16 @@ public class TourDAO {
 		return null;
 	}
 
-
-	public int Tourlike(TourLikeDTO dto) {
-
+	/**
+	 * 
+	 * 회원이 관심등록이 된 상태인지 확인하는 메소드
+	 * 
+	 * @author : 박채은
+	 * @param dto
+	 * @return int
+	 */
+	public int isTourlike(TourLikeDTO dto) {
+		
 		try {
 			
 			String sql = "select count(*) as cnt from tblLikeTour where tseq = ? and id = ?";
@@ -457,6 +464,58 @@ public class TourDAO {
 			}
 			
 
+			int state = -1;
+			
+			if (result == 1) {
+				//참여 했을경우
+				state = 2; 
+				
+			} else {
+				//참여 안했을경우
+				state = 1;
+			}
+			
+			rs.close();
+			pstat.close();
+			conn.close();
+			
+			return state;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.isTourlike");
+			e.printStackTrace();
+		}
+		return 0;
+	}
+
+	/**
+	 * 
+	 * 관광명소 찜 버튼을 누르면 등록, 수정해주는 메소드
+	 * 
+	 * @author : 박채은
+	 * @param dto
+	 * @return int
+	 */
+	public int Tourlike(TourLikeDTO dto) {
+
+		try {
+			
+			String sql = "select count(*) as cnt from tblLikeTour where tseq = ? and id = ?";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, dto.getTseq());
+			pstat.setString(2, dto.getId());
+			
+			rs = pstat.executeQuery();
+			
+			int result = 0;
+			
+			if (rs.next()) {
+				result = rs.getInt("cnt");
+			}
+			
+
 			int state = 0;
 			
 			if (result == 1) {
@@ -468,32 +527,27 @@ public class TourDAO {
 				state = 1;
 			}
 			
-			System.out.println("state:" + state);
-			
 			if (state == 1) {
 				//처음 참여하는 경우 insert
 				sql = "insert into tblLikeTour (seq, id, tseq) values (seqLikeTour.nextVal, ?, ?)";
 				
-				pstat = conn.prepareStatement(sql);
-				
-				pstat.setString(1, dto.getId());
-				pstat.setString(2, dto.getTseq());
-				
-				return pstat.executeUpdate();
-				
 			} else if (state == 2) {
 				//참여를 했는데 또 누르면 취소
-				sql = "delete from tblLikeTour where id = ? and tseq = ?";
-				
-				pstat = conn.prepareStatement(sql);
-				
-				pstat.setString(1, dto.getId());
-				pstat.setString(2, dto.getTseq());
-				
-				return pstat.executeUpdate();
-				
-				
+				sql = "delete from tblLikeTour where id = ? and tseq = ?";	
 			}
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, dto.getId());
+			pstat.setString(2, dto.getTseq());
+			
+			result = pstat.executeUpdate();
+			
+			rs.close();
+			pstat.close();
+			conn.close();
+			
+			return result;
 			
 		} catch (Exception e) {
 			System.out.println("TourDAO.Tourlike");
@@ -505,6 +559,14 @@ public class TourDAO {
 	}
 
 
+	/**
+	 * 
+	 * 숙소에 찜한 횟수를 출력하기 위한 메소드
+	 * 
+	 * @author : 박채은
+	 * @param seq
+	 * @return int
+	 */
 	public int getTourlike(String seq) {
 		
 		try {
@@ -515,7 +577,12 @@ public class TourDAO {
 			
 			pstat.setString(1, seq);
 			
-			return pstat.executeUpdate();
+			int result = pstat.executeUpdate();
+			
+			pstat.close();
+			conn.close();
+			
+			return result;
 			
 		} catch (Exception e) {
 			System.out.println("TourDAO.getTourlike");
