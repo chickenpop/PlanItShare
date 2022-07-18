@@ -22,9 +22,9 @@ public class TourList extends HttpServlet {
 		
 		TourDAO dao = new TourDAO();
 		
-		ArrayList<TourDTO> dto = dao.getTourlist(seq);
+		ArrayList<TourDTO> list = dao.getTourlist(seq);
 		
-		req.setAttribute("dto", dto);
+		req.setAttribute("list", list);
 		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/city/tour/tourlist.jsp");
 

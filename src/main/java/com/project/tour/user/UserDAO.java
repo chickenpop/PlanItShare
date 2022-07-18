@@ -10,9 +10,10 @@ import com.project.tour.dto.AdminDTO;
 import com.project.tour.dto.LoginDTO;
 import com.project.tour.dto.UserDTO;
 
+
 public class UserDAO {
 	
-	
+		
 	  	Connection conn;
 	    PreparedStatement pstat;
 	    Statement stat;
@@ -22,6 +23,14 @@ public class UserDAO {
 	        conn = DBUtil.open();
 	    }
 
+	    
+		/**
+		 * 아이디와 비밀번호가 일치하는 회원정보를 가져오는 메소드
+		 * @author jiyoon
+		 * 
+		 * @param dto
+		 * @return
+		 */
 		public Object login(LoginDTO dto) {
 			
 			
@@ -52,6 +61,8 @@ public class UserDAO {
 			                return udto;
 			            }
 			            
+			            return null;
+			            
 			            
 					} else if (dto.getLoginmode().equals("admin")) {
 						
@@ -70,6 +81,8 @@ public class UserDAO {
 			           
 			            	return adto;
 			            }
+			            
+			            return null;
 					}
 				
 				
@@ -167,6 +180,131 @@ public class UserDAO {
 			
 		}
 
+		
+		
+		/**
+		 * 이름과 전화번호를 받고 회원정보가 일치하는 아이디를 찾아주는 메소드
+		 * @author jiyoon
+		 * 
+		 * @param name
+		 * @param tel
+		 * @return string
+		 */
+		public String idSearch(String name, String tel) {
+			
+			try {
+				
+				
+				String sql = "select id from tblUser where name = ? and tel = ?";
+				
+				pstat = conn.prepareStatement(sql);
+				pstat.setString(1, name);
+				pstat.setString(2, tel);
+				rs = pstat.executeQuery();
+				
+				if (rs.next()) {
+					return rs.getString("id");
+				}
+			
+				
+				
+				
+			} catch (Exception e) {
+				System.out.println("UserDAO.idSearch");
+				e.printStackTrace();
+
+			}
+			
+			return null;
+		}
+
+		
+	
+		
+		/**
+		 *아이디, 이름, 전화번호를 받고 회원 정보가 일치하는지 확인하는 메소드 
+		 *@author jiyoon
+		 *
+		 * @param id
+		 * @param name
+		 * @param tel
+		 * @return int
+		 */
+		public int pwSearch(String id, String name, String tel) {
+			
+			try {
+				
+				String sql = "select count(*) as cnt from tblUser where name = ? and tel = ? and id = ?";
+				
+	            pstat = conn.prepareStatement(sql);
+	            pstat.setString(1, name);
+	            pstat.setString(2, tel);
+	            pstat.setString(3, id);
+	            rs = pstat.executeQuery();
+
+	            if (rs.next()) {
+	                return Integer.parseInt(rs.getString("cnt"));
+	            }
+	            
+				
+			} catch (Exception e) {
+				System.out.println("UserDAO.pwSearch");
+				e.printStackTrace();
+
+			}
+			
+			
+			return 0;
+		}
+
+
+		public int pwUpdate(String id, String pw) {
+			
+			
+			try {
+				
+			     	String sql = "update tblUser set pw = ? where id = ?";
+		            pstat = conn.prepareStatement(sql);
+		            pstat.setString(1, pw);
+		            pstat.setString(2, id);
+
+		            return pstat.executeUpdate();
+				
+				
+			} catch (Exception e) {
+				System.out.println("UserDAO.pwUpdate");
+				e.printStackTrace();
+
+			}
+			
+			
+			return 0;
+		}
+
+
+		public int unregister(String id) {
+			
+			
+			try {
+				
+
+	            String sql = "update tblUser set name = 'not used', pw = 'not used', tel = 'not used', profile = 'not used', regdate = sysdate, gender = 'not used', active='n' where id = ?";
+	            pstat = conn.prepareStatement(sql);
+	            pstat.setString(1, id);
+
+	            return pstat.executeUpdate();
+				
+				
+				
+			} catch (Exception e) {
+				System.out.println("UserDAO.unregister");
+				e.printStackTrace();
+
+			}
+			
+			
+			return 0;
+		}
 
 }
 

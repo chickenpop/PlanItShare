@@ -17,4 +17,6 @@ public class TourDTO {
 	private String reviewCnt;
 	private String reviewAvg;
 	
+	private String cseq;
+	
 }

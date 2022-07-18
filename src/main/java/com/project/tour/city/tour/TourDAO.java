@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 import com.project.tour.DBUtil;
 import com.project.tour.dto.TourDTO;
+import com.project.tour.dto.TourReviewDTO;
 
 public class TourDAO {
 
 	Connection conn;
 	PreparedStatement pstat;
 	ResultSet rs;
-	
 	
 	public TourDAO() {
 		conn = DBUtil.open();
@@ -22,7 +22,7 @@ public class TourDAO {
 
 	/**
 	 * 
-	 * 여행지를 선택하면 관광명소 list을 가져오는 메소드
+	 * 여행지를 선택하면 관광명소 목록을 가져오는 메소드
 	 * 
 	 * @author 박채은
 	 * @param seq 
@@ -43,7 +43,7 @@ public class TourDAO {
 					   + "       tc.category, \r\n"
 					   + "       (select count(*) from tblLikeTour lt where lt.tseq = t.seq) as likeCnt, \r\n"
 					   + "       (select count(*) from tblTourReview tr where tr.tseq = t.seq) as reviewCnt, \r\n"
-					   + "       (select avg(tr.star) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg\r\n"
+					   + "       (select round(avg(tr.star), 2) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg\r\n"
 					   + "  from tblTour t \r\n"
 					   + " inner join tblCity c on t.cseq = c.seq\r\n"
 					   + " inner join tblTourCategory tc on t.tcseq = tc.seq \r\n"
@@ -71,9 +71,14 @@ public class TourDAO {
 				dto.setLikeCnt(rs.getString("likeCnt"));
 				dto.setReviewCnt(rs.getString("reviewCnt"));
 				dto.setReviewAvg(rs.getString("reviewAvg"));
+				dto.setCseq(seq);
 				
 				list.add(dto);
 			}
+			
+			rs.close();
+			pstat.close();
+			conn.close();
 			
 			return list;
 			
@@ -84,6 +89,172 @@ public class TourDAO {
 		}
 		
 		return null;
+	}
+
+	/**
+	 * 
+	 * 관광명소를 선택하면 관광명소의 상세정보를 가져오는 메소드
+	 * 
+	 * @author : 박채은
+	 * @param seq
+	 * @param cseq 
+	 * @return TourDTO
+	 */
+	public TourDTO getTourOne(String seq, String cseq) {
+
+		try {
+			
+			String sql = "select\r\n"
+					   + "       t.seq, \r\n"
+					   + "       t.placename, \r\n"
+					   + "       t.address, \r\n"
+					   + "       t.open, \r\n"
+					   + "       t.close, \r\n"
+					   + "       t.image, \r\n"
+					   + "       t.cseq, \r\n"
+					   + "       tc.category, \r\n"
+					   + "       (select count(*) from tblLikeTour lt where lt.tseq = t.seq) as likeCnt, \r\n"
+					   + "       (select count(*) from tblTourReview tr where tr.tseq = t.seq) as reviewCnt, \r\n"
+					   + "       (select round(avg(tr.star), 2) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg\r\n"
+					   + "  from tblTour t \r\n"
+					   + " inner join tblCity c on t.cseq = c.seq\r\n"
+					   + " inner join tblTourCategory tc on t.tcseq = tc.seq \r\n"
+					   + " where t.seq = ? and c.seq = ? order by likeCnt desc";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, seq);
+			pstat.setString(2, cseq);
+			
+			rs = pstat.executeQuery();
+			
+			TourDTO dto = new TourDTO();
+			
+			if(rs.next()) {
+			
+				dto.setSeq(rs.getString("seq"));
+				dto.setPlaceName(rs.getString("placeName"));
+				dto.setAddress(rs.getString("address"));
+				dto.setOpen(rs.getString("open"));
+				dto.setClose(rs.getString("close"));
+				dto.setImage(rs.getString("image"));
+				dto.setCategory(rs.getString("category"));
+				dto.setLikeCnt(rs.getString("likeCnt"));
+				dto.setReviewCnt(rs.getString("reviewCnt"));
+				dto.setReviewAvg(rs.getString("reviewAvg"));
+				
+			}
+			
+			rs.close();
+			pstat.close();
+			conn.close();
+			
+			return dto;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.getTourOne");
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+
+	/**
+	 * 
+	 * 선택한 관광명소의 리뷰 목록을 가져오는 메소드
+	 * 
+	 * @author : 박채은
+	 * @param seq
+	 * @return ArrayList<TourReviewDTO>
+	 */
+	public ArrayList<TourReviewDTO> getTourReviewList(String seq) {
+
+		try {
+			
+			String sql = "select  \r\n"
+					   + "       seq,\r\n"
+					   + "       content, \r\n"
+					   + "       star,\r\n"
+					   + "       regdate,\r\n"
+					   + "       id,\r\n"
+					   + "       image\r\n"
+					   + "  from tblTourReview where tseq = ? order by seq desc";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, seq);
+			
+			rs = pstat.executeQuery();
+			
+			ArrayList<TourReviewDTO> list = new ArrayList<TourReviewDTO>();
+			
+			while(rs.next()) {
+				
+				TourReviewDTO dto = new TourReviewDTO();
+				
+				dto.setSeq(rs.getString("seq"));
+				dto.setContent(rs.getString("content"));
+				dto.setStar(rs.getString("star"));
+				dto.setRegdate(rs.getString("regdate"));
+				dto.setId(rs.getString("id"));
+				dto.setImage(rs.getString("image"));
+				
+				list.add(dto);
+				
+			}
+			
+			rs.close();
+			pstat.close();
+			conn.close();
+			
+			return list;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.getTourReviewList");
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+
+	/**
+	 * 
+	 * 관광명소 리뷰 등록 메소드
+	 * 
+	 * @author : 박채은
+	 * @param dto
+	 * @return int
+	 */
+	public int addTourReview(TourReviewDTO dto) {
+
+		try {
+			
+			String sql = "insert into tblTourReview (seq, content, star, tseq, id, image) "
+					   + "values (seqTourReview.nextVal, ?, ?, ?, ?, ?)";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, dto.getContent());
+			pstat.setString(2, dto.getStar());
+			pstat.setString(3, dto.getSeq());
+			pstat.setString(4, dto.getId());
+			pstat.setString(5, dto.getImage());
+			
+			int result = pstat.executeUpdate();
+			
+			pstat.close();
+			conn.close();
+			
+			return result;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.addTourReview");
+			e.printStackTrace();
+		}
+		
+		return 0;
 	}
 
 }
