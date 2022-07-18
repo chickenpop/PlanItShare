@@ -19,4 +19,6 @@ public class TourDTO {
 	
 	private String cseq;
 	
+	private String keyword;
+	
 }

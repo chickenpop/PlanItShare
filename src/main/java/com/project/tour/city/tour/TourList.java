@@ -25,6 +25,7 @@ public class TourList extends HttpServlet {
 		ArrayList<TourDTO> list = dao.getTourlist(seq);
 		
 		req.setAttribute("list", list);
+		req.setAttribute("cseq", seq);
 		
 		RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/city/tour/tourlist.jsp");
 

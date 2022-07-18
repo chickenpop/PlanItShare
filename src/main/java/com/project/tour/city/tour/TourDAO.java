@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.project.tour.DBUtil;
 import com.project.tour.dto.TourDTO;
+import com.project.tour.dto.TourLikeDTO;
 import com.project.tour.dto.TourReviewDTO;
 
 public class TourDAO {
@@ -71,7 +72,7 @@ public class TourDAO {
 				dto.setLikeCnt(rs.getString("likeCnt"));
 				dto.setReviewCnt(rs.getString("reviewCnt"));
 				dto.setReviewAvg(rs.getString("reviewAvg"));
-				dto.setCseq(seq);
+				dto.setCseq(rs.getString("cseq"));
 				
 				list.add(dto);
 			}
@@ -142,7 +143,7 @@ public class TourDAO {
 				dto.setLikeCnt(rs.getString("likeCnt"));
 				dto.setReviewCnt(rs.getString("reviewCnt"));
 				dto.setReviewAvg(rs.getString("reviewAvg"));
-				
+				dto.setCseq(rs.getString("cseq"));
 			}
 			
 			rs.close();
@@ -251,6 +252,273 @@ public class TourDAO {
 			
 		} catch (Exception e) {
 			System.out.println("TourDAO.addTourReview");
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+
+
+	/**
+	 * 
+	 * 회원이 작성한 관광명소 리뷰를 삭제하는 메소드
+	 * 
+	 * @author : 박채은
+	 * @param seq
+	 * @return int
+	 */
+	public int delTourReview(String seq) {
+
+		try {
+			
+			String sql = "delete tblTourReview where seq = ?";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, seq);
+			
+			int result =  pstat.executeUpdate();
+			
+			pstat.close();
+			conn.close();
+			
+			return result;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.delTourReview");
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+
+
+	/**
+	 * 
+	 * 검색한 단어가 포함된 관광명소 목록을 가져오는 메소드
+	 * 
+	 * @author : 박채은
+	 * @param dto
+	 * @return ArrayList<TourDTO>
+	 */
+	public ArrayList<TourDTO> serachPlaceNameList(TourDTO dto) {
+
+		try {
+			
+			String sql = "select\r\n"
+					   + "       t.seq, \r\n"
+					   + "       t.placename, \r\n"
+					   + "       t.address, \r\n"
+					   + "       t.open, \r\n"
+					   + "       t.close, \r\n"
+					   + "       t.image, \r\n"
+					   + "       t.cseq, \r\n"
+					   + "       tc.category, \r\n"
+					   + "       (select count(*) from tblLikeTour lt where lt.tseq = t.seq) as likeCnt, \r\n"
+					   + "       (select count(*) from tblTourReview tr where tr.tseq = t.seq) as reviewCnt, \r\n"
+					   + "       (select round(avg(tr.star), 2) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg\r\n"
+					   + "  from tblTour t \r\n"
+					   + " inner join tblCity c on t.cseq = c.seq\r\n"
+					   + " inner join tblTourCategory tc on t.tcseq = tc.seq \r\n"
+					   + " where c.seq = ? and t.placename like ? order by likeCnt desc";
+			
+			// 키워드 형변환
+			String keyWord = "%" + dto.getKeyword() + "%";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, dto.getCseq());
+			pstat.setString(2, keyWord);
+			
+			rs = pstat.executeQuery();
+						
+			ArrayList<TourDTO> list = new ArrayList<TourDTO>();
+			
+			while(rs.next()) {
+				
+				TourDTO tdto = new TourDTO();
+				
+				tdto.setSeq(rs.getString("seq"));
+				tdto.setPlaceName(rs.getString("placeName"));
+				tdto.setAddress(rs.getString("address"));
+				tdto.setOpen(rs.getString("open"));
+				tdto.setClose(rs.getString("close"));
+				tdto.setImage(rs.getString("image"));
+				tdto.setCategory(rs.getString("category"));
+				tdto.setLikeCnt(rs.getString("likeCnt"));
+				tdto.setReviewCnt(rs.getString("reviewCnt"));
+				tdto.setReviewAvg(rs.getString("reviewAvg"));
+				tdto.setCseq(rs.getString("cseq"));
+				
+				list.add(tdto);
+				
+			}
+			
+			return list;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.serachPlaceNameList");
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+
+
+	/**
+	 * 검색한 단어가 포함된 카테고리 목록을 가져오는 메소드
+	 * 
+	 * @author : 박채은
+	 * @param dto
+	 * @return ArrayList<TourDTO>
+	 */
+	public ArrayList<TourDTO> serachCategoryList(TourDTO dto) {
+
+		try {
+			
+			String sql = "select\r\n"
+					   + "       t.seq, \r\n"
+					   + "       t.placename, \r\n"
+					   + "       t.address, \r\n"
+					   + "       t.open, \r\n"
+					   + "       t.close, \r\n"
+					   + "       t.image, \r\n"
+					   + "       t.cseq, \r\n"
+					   + "       tc.category, \r\n"
+					   + "       (select count(*) from tblLikeTour lt where lt.tseq = t.seq) as likeCnt, \r\n"
+					   + "       (select count(*) from tblTourReview tr where tr.tseq = t.seq) as reviewCnt, \r\n"
+					   + "       (select round(avg(tr.star), 2) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg\r\n"
+					   + "  from tblTour t \r\n"
+					   + " inner join tblCity c on t.cseq = c.seq\r\n"
+					   + " inner join tblTourCategory tc on t.tcseq = tc.seq \r\n"
+					   + " where c.seq = ? and tc.category like ? order by likeCnt desc";					
+			
+			// 키워드 형변환
+			String keyWord = "%" + dto.getKeyword() + "%";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, dto.getCseq());
+			pstat.setString(2, keyWord);
+			
+			rs = pstat.executeQuery();
+						
+			ArrayList<TourDTO> list = new ArrayList<TourDTO>();
+			
+			while(rs.next()) {
+				
+				TourDTO tdto = new TourDTO();
+				
+				tdto.setSeq(rs.getString("seq"));
+				tdto.setPlaceName(rs.getString("placeName"));
+				tdto.setAddress(rs.getString("address"));
+				tdto.setOpen(rs.getString("open"));
+				tdto.setClose(rs.getString("close"));
+				tdto.setImage(rs.getString("image"));
+				tdto.setCategory(rs.getString("category"));
+				tdto.setLikeCnt(rs.getString("likeCnt"));
+				tdto.setReviewCnt(rs.getString("reviewCnt"));
+				tdto.setReviewAvg(rs.getString("reviewAvg"));
+				tdto.setCseq(rs.getString("cseq"));
+				
+				list.add(tdto);
+				
+			}
+			
+			return list;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.serachCategoryList");
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+
+	public int Tourlike(TourLikeDTO dto) {
+
+		try {
+			
+			String sql = "select count(*) as cnt from tblLikeTour where tseq = ? and id = ?";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, dto.getTseq());
+			pstat.setString(2, dto.getId());
+			
+			rs = pstat.executeQuery();
+			
+			
+			int result = 0;
+			
+			if (rs.next()) {
+				result = rs.getInt("cnt");
+			}
+			
+
+			int state = 0;
+			
+			if (result == 1) {
+				//참여 했을경우
+				state = 2; 
+				
+			} else {
+				//참여 안했을경우
+				state = 1;
+			}
+			
+			System.out.println("state:" + state);
+			
+			if (state == 1) {
+				//처음 참여하는 경우 insert
+				sql = "insert into tblLikeTour (seq, id, tseq) values (seqLikeTour.nextVal, ?, ?)";
+				
+				pstat = conn.prepareStatement(sql);
+				
+				pstat.setString(1, dto.getId());
+				pstat.setString(2, dto.getTseq());
+				
+				return pstat.executeUpdate();
+				
+			} else if (state == 2) {
+				//참여를 했는데 또 누르면 취소
+				sql = "delete from tblLikeTour where id = ? and tseq = ?";
+				
+				pstat = conn.prepareStatement(sql);
+				
+				pstat.setString(1, dto.getId());
+				pstat.setString(2, dto.getTseq());
+				
+				return pstat.executeUpdate();
+				
+				
+			}
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.Tourlike");
+			e.printStackTrace();
+		}
+		
+		return 0;
+		
+	}
+
+
+	public int getTourlike(String seq) {
+		
+		try {
+			
+			String sql = "select likecnt from vwTour where seq = ?";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, seq);
+			
+			return pstat.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.getTourlike");
 			e.printStackTrace();
 		}
 		

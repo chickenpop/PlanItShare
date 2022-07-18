@@ -50,11 +50,12 @@ public class TourReviewAdd extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		UserDTO udto = (UserDTO)session.getAttribute("auth");
+		UserDTO adto = (UserDTO)session.getAttribute("auth");
+		String id = adto.getId();
 		
 		int result = 0;
 		
-		if(udto.getId() == null || udto.getId() == "") {
+		if(id == null || id == "") {
 			result = 0;
 		} else {
 		
@@ -62,7 +63,6 @@ public class TourReviewAdd extends HttpServlet {
 			String filename = multi.getFilesystemName("attach");
 			
 			String content = multi.getParameter("content");
-			String id = udto.getId();
 			String star = multi.getParameter("star");
 			
 			TourReviewDTO dto = new TourReviewDTO();
