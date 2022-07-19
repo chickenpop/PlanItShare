@@ -30,7 +30,7 @@ public class TourReviewAdd extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		
 		// 리뷰 이미지 업로드
-		String path = req.getRealPath("/asset/image/tour");
+		String path = req.getRealPath("/asset/image");
 		int size = 1024 * 1024 * 100;
 		
 		MultipartRequest multi = null;

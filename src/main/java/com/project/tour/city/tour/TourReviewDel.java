@@ -1,5 +1,6 @@
 package com.project.tour.city.tour;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -8,6 +9,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.project.tour.dto.TourDTO;
 
 @WebServlet("/city/tourreviewdel.do")
 public class TourReviewDel extends HttpServlet {
@@ -19,6 +22,20 @@ public class TourReviewDel extends HttpServlet {
 		
 		TourDAO dao = new TourDAO();
 		
+		// 리뷰 사진 삭제
+		TourDTO dto = dao.getImage(seq);
+		
+		if(dto.getImage() != null || dto.getImage() != "") {
+			
+			String path = req.getRealPath("/asset/image");
+			path += "/" + dto.getImage();
+			
+			File file = new File(path);
+			file.delete();
+			
+		}
+		
+		dao = new TourDAO();
 		int result = dao.delTourReview(seq);
 		
 		resp.setCharacterEncoding("UTF-8");

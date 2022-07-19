@@ -49,6 +49,7 @@ public class TourLike extends HttpServlet {
 		//좋아요 눌렀을때 입력 정보업데이트
 		int result = dao.Tourlike(dto);
 		
+		dao = new TourDAO();
 		//해당 숙소의 좋아요 갯수
 		int likenum = dao.getTourlike(seq);
 		
@@ -58,8 +59,6 @@ public class TourLike extends HttpServlet {
 		PrintWriter writer = resp.getWriter();
 		
 		writer.printf("{\"likenum\": %d}", likenum);
-		
-		
 		
 		writer.close();
 		

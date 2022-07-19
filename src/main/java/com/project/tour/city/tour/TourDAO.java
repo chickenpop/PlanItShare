@@ -579,9 +579,6 @@ public class TourDAO {
 			
 			int result = pstat.executeUpdate();
 			
-			pstat.close();
-			conn.close();
-			
 			return result;
 			
 		} catch (Exception e) {
@@ -590,6 +587,49 @@ public class TourDAO {
 		}
 		
 		return 0;
+	}
+
+
+	/**
+	 * 
+	 * 리뷰에 등록된 이미지 가져오는 메소드
+	 * 
+	 * @author : 박채은
+	 * @param seq
+	 * @return TourDTO
+	 */
+	public TourDTO getImage(String seq) {
+		
+		try {
+			
+			String sql = "select image from tblTourReview where seq = ?";
+			
+			pstat = conn.prepareStatement(sql);
+			
+			pstat.setString(1, seq);
+
+			rs = pstat.executeQuery();
+			
+			TourDTO dto = new TourDTO();
+			
+			if(rs.next()) {
+				
+				dto.setImage(rs.getString("image"));
+				
+			}
+			
+			rs.close();
+			pstat.close();
+			conn.close();
+			
+			return dto;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.getImage");
+			e.printStackTrace();
+		}
+		
+		return null;
 	}
 
 }

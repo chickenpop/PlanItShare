@@ -45,7 +45,7 @@ public class TourView extends HttpServlet {
 		int state = 0;
 		
 		// 관심등록여부
-		if(session.getAttribute("auth") != null) {
+		if(session.getAttribute("auth") != null && session.getAttribute("auth") instanceof UserDTO) {
 			
 			UserDTO udto = (UserDTO)session.getAttribute("auth");
 		
