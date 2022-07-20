@@ -1,6 +1,6 @@
 --tour_DML.sql
 
-
+SELECT * FROM all_users;
 
 --tblUser
 insert into tblUser(id, name, tel, pw, profile, regdate, active, gender) values ('yoon', '강지윤', '01011112222', '1111', default, default, 'y', 'f');
@@ -15,7 +15,7 @@ insert into tblUser(id, name, tel, pw, profile, regdate, active, gender) values 
 insert into tblAdmin(seq, name, id, pw) values (seqAdmin.nextVal, '관리자', 'admin', '1111');
 
 
-
+select * from tblUser;
 
 
 -- 여행지
@@ -192,7 +192,26 @@ insert into tblTour(seq, placeName, address, image, open, close, tcseq, cseq) va
 insert into tblTour(seq, placeName, address, image, open, close, tcseq, cseq) values (seqTour.nextVal, '제주민속촌', '제주 서귀포시 표선면 민속해안로 631-34 63629', '제주민속촌.jpg', '09:30', '18:00', 10, 1);
 
 
-
+update tblTour set  lat = '33.4860091',  lng = '126.4906495' where seq = 1;
+update tblTour set  lat = '33.452071',   lng = '126.4883958' where seq = 2;
+update tblTour set  lat = '33.25029595', lng = '126.4121631' where seq = 3;
+update tblTour set  lat = '33.30590878', lng = '126.2894904' where seq = 4;
+update tblTour set  lat = '33.44832789', lng = '126.6702744' where seq = 5;
+update tblTour set  lat = '33.25259946', lng = '126.4142381' where seq = 6;
+update tblTour set  lat = '33.37665832', lng = '126.5422124' where seq = 7;
+update tblTour set  lat = '33.516325',   lng = '126.512089' where seq = 8;
+update tblTour set  lat = '33.51334192', lng = '126.5214528' where seq = 9;
+update tblTour set  lat = '33.38494618', lng = '126.8014818' where seq = 10;
+update tblTour set  lat = '33.30483932', lng = '126.3167933' where seq = 11;
+update tblTour set  lat = '33.24901945', lng = '126.2987716' where seq = 12;
+update tblTour set  lat = '33.43540906', lng = '126.4194992' where seq = 13;
+update tblTour set  lat = '33.24623259', lng = '126.4494542' where seq = 14;
+update tblTour set  lat = '33.50909876', lng = '126.4772117' where seq = 15;
+update tblTour set  lat = '33.45912054', lng = '126.9405375' where seq = 16;
+update tblTour set  lat = '33.41444141', lng = '126.6555145' where seq = 17;
+update tblTour set  lat = '33.45039555', lng = '126.4878893' where seq = 18;
+update tblTour set  lat = '33.477383',   lng = '126.6276242' where seq = 19;
+update tblTour set  lat = '33.32239595', lng = '126.8422973' where seq = 20;
 
 --tblLodging
 --1.호텔
@@ -247,7 +266,28 @@ insert into tblLodging (seq, name, address, lcseq, cseq, image, checkin, checkou
 insert into tblLodging (seq, name, address, lcseq, cseq, image, checkin, checkout) values (seqLodging.nextVal, '제주이티하우스', '제주 제주시 애월읍 구엄4길 20-9', 6, 1, '이티하우스.jpg', '15:00', '11:00');
 insert into tblLodging (seq, name, address, lcseq, cseq, image, checkin, checkout) values (seqLodging.nextVal, '뿌라비다', '제주 제주시 서해안로 518', 6, 1, '뿌라비다.jpg', '15:00', '11:00');
 
+update tblLodging set lat = 33.24736299274199, lng = 126.40969327054391 where seq = 1;
+update tblLodging set lat = 33.24845280607869, lng = 126.41059159717247 where seq = 2;
+update tblLodging set lat = 33.49007655865454, lng = 126.48877064842802 where seq = 3;
+update tblLodging set lat = 33.51737542822906, lng = 126.52750563851026 where seq = 4;
+update tblLodging set lat = 33.24767315799415, lng = 126.58128401781627 where seq = 5;
+update tblLodging set lat = 33.362764076931185, lng = 126.19333947564616 where seq = 6;
+update tblLodging set lat = 33.55417537590468, lng = 126.80000149220588 where seq = 7;
+update tblLodging set lat = 33.39919375551509, lng = 126.24524224538811 where seq = 8;
+update tblLodging set lat = 33.44648255499522, lng = 126.29720828016056 where seq = 9;
+update tblLodging set lat = 33.43049322668281, lng = 126.92818243556455 where seq = 10;
+update tblLodging set lat = 33.27436024827293, lng = 126.70230264828577 where seq = 11;
+update tblLodging set lat = 33.44900052958143, lng = 126.63734781628318 where seq = 12;
+update tblLodging set lat = 33.28795135009012, lng = 126.41602879846758 where seq = 13;
+update tblLodging set lat = 33.504581901316705, lng = 126.51954666366194 where seq = 14;
+update tblLodging set lat = 33.48473060564133, lng = 126.39259007490638 where seq = 15;
+update tblLodging set lat = 33.24701901186036, lng = 126.55897644519024 where seq = 16;
+update tblLodging set lat = 33.232215098958946, lng = 126.36702273005392 where seq = 17;
+update tblLodging set lat = 33.433609789417815, lng = 126.29057200401824 where seq = 18;
+update tblLodging set lat = 33.4815157554488, lng = 126.37916791608966 where seq = 19;
+update tblLodging set lat = 33.51980922900673, lng = 126.4944944433194 where seq = 20;
 
+commit;
 
 --음식
 -- 한식
@@ -294,5 +334,31 @@ INSERT INTO tblFood VALUES(seqFood.NEXTVAL, '만감교차', '제주 서귀포시
 INSERT INTO tblFood VALUES(seqFood.NEXTVAL, '델문도', '제주 제주시 조천읍 조함해안로 519-10', '10:00', '22:00', 8, 1, '델문도.png');
 INSERT INTO tblFood VALUES(seqFood.NEXTVAL, '마마롱', '제주 제주시 애월읍 평화로 2783 1층 마마롱', '10:00', '22:00', 8, 1, '마마롱.png');
 
+update tblFood set lat = '33.536981600996754', lng = '126.63841060023653' where seq = 1;
+update tblFood set lat = '33.47200128821989', lng = '126.34808081712701' where seq = 2;
+update tblFood set lat = '33.48489527946151', lng = '126.46093801872063' where seq = 3;
+update tblFood set lat = '33.324988083137576', lng = '126.21884004842639' where seq = 4;
+update tblFood set lat = '33.396259341051355', lng = '126.24365534200787' where seq = 5;
+update tblFood set lat = '33.46322546753085', lng = '126.47885123048944' where seq = 6;
+update tblFood set lat = '33.36750978395541', lng = '126.49592717748476' where seq = 7;
+update tblFood set lat = '33.22017095276788', lng = '126.25165317493949' where seq = 8;
+update tblFood set lat = '33.280815739694596', lng = '126.2889423755469' where seq = 9;
+update tblFood set lat = '33.46155248287148', lng = '126.31182322005755' where seq = 10;
+update tblFood set lat = '33.43665089075973', lng = '126.29707248127582' where seq = 11;
+update tblFood set lat = '33.448301419748454', lng = '126.30704514172142' where seq = 12;
+update tblFood set lat = '33.4643080551677', lng = '126.32103950178478' where seq = 13;
+update tblFood set lat = '33.24827424998081', lng = '126.56620254508184' where seq = 14;
+update tblFood set lat = '33.51290058010163', lng = '126.96133841441633' where seq = 15;
+update tblFood set lat = '33.46672486904064', lng = '126.3191704128135' where seq = 16;
+update tblFood set lat = '33.258334322258186', lng = '126.4075032032366' where seq = 17;
+update tblFood set lat = '33.47887158127542', lng = '126.46401793229131' where seq = 18;
+update tblFood set lat = '33.464327987596675', lng = '126.30898297110336' where seq = 19;
+update tblFood set lat = '33.49703900491691', lng = '126.5089218992826' where seq = 20;
+update tblFood set lat = '33.482792432842565', lng = '126.37630114558529' where seq = 21;
+update tblFood set lat = '33.366365162583975', lng = '126.52862441106727' where seq = 22;
+update tblFood set lat = '33.48633934038277', lng = '126.48071846063432' where seq = 23;
+update tblFood set lat = '33.435664978147805', lng = '126.91679215896471' where seq = 24;
+update tblFood set lat = '33.54370208859678', lng = '126.66871106463437' where seq = 25;
+update tblFood set lat = '33.452150232533945', lng = '126.43916928562346' where seq = 26;
 
 commit;
