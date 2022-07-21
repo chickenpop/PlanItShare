@@ -16,6 +16,7 @@ public class UserDTO {
 	private String active;
 	private String loginmode;
 	
-
+	private String reviewcnt;
+    private String commentcnt;
 
 }

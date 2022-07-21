@@ -4,21 +4,42 @@ import lombok.Data;
 
 @Data
 public class TourDTO {
+   
+   public String getPlaceName() {
+		return placeName;
+	}
 
-	private String seq;
-	private String placeName;
-	private String address;
-	private String open;
-	private String close;
-	private String image;
-	
-	private String category;
-	private String likeCnt;
-	private String reviewCnt;
-	private String reviewAvg;
-	
-	private String cseq;
-	
-	private String keyword;
-	
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
+	}
+
+   private String seq;
+   private String placename;
+   private String address;
+   private String open;
+   private String close;
+   private String tcseq;
+   private String cseq;
+   private String image;
+   private String lat;
+   private String lng;
+   
+   private String place;
+   private String category;
+   
+    private String placeName;
+   
+    private String likeCnt;
+    private String reviewCnt;
+    private String reviewAvg;
+   
+   
+    private String keyword;
+   
+    private String distrinct;
+   
+
+   
+   
+
 }
