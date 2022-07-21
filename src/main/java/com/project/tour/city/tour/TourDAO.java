@@ -3,7 +3,9 @@ package com.project.tour.city.tour;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.project.tour.DBUtil;
 import com.project.tour.dto.TourDTO;
@@ -13,6 +15,7 @@ import com.project.tour.dto.TourReviewDTO;
 public class TourDAO {
 
 	Connection conn;
+	Statement stat;
 	PreparedStatement pstat;
 	ResultSet rs;
 	
@@ -20,39 +23,45 @@ public class TourDAO {
 		conn = DBUtil.open();
 	}
 	
-
+    /* -------------------------------------------------------------- 박채은 --------------------------------------------------------------------- */
 	/**
 	 * 
 	 * 여행지를 선택하면 관광명소 목록을 가져오는 메소드
 	 * 
 	 * @author 박채은
-	 * @param seq 
+	 * @param map 
 	 * @return ArrayList<TourDTO>
 	 */
-	public ArrayList<TourDTO> getTourlist(String seq) {
+	public ArrayList<TourDTO> getTourlist(HashMap<String, String> map) {
 
 		try {
 			
 			String sql = "select\r\n"
-					   + "       t.seq, \r\n"
-					   + "       t.placename, \r\n"
-					   + "       t.address, \r\n"
-					   + "       t.open, \r\n"
-					   + "       t.close, \r\n"
-					   + "       t.image, \r\n"
-					   + "       t.cseq, \r\n"
-					   + "       tc.category, \r\n"
-					   + "       (select count(*) from tblLikeTour lt where lt.tseq = t.seq) as likeCnt, \r\n"
-					   + "       (select count(*) from tblTourReview tr where tr.tseq = t.seq) as reviewCnt, \r\n"
-					   + "       (select round(avg(tr.star), 2) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg\r\n"
-					   + "  from tblTour t \r\n"
-					   + " inner join tblCity c on t.cseq = c.seq\r\n"
-					   + " inner join tblTourCategory tc on t.tcseq = tc.seq \r\n"
-					   + " where c.seq = ? order by likeCnt desc";
+					   + "       *\r\n"
+					   + "  from (select \r\n"
+					   + "               t.seq, \r\n"
+					   + "               t.placename, \r\n"
+					   + "               t.address, \r\n"
+					   + "               t.open, \r\n"
+					   + "               t.close, \r\n"
+					   + "               t.image, \r\n"
+					   + "               t.cseq, \r\n"
+					   + "               tc.category, \r\n"
+					   + "               (select count(*) from tblLikeTour lt where lt.tseq = t.seq) as likeCnt, \r\n"
+					   + "               (select count(*) from tblTourReview tr where tr.tseq = t.seq) as reviewCnt, \r\n"
+					   + "               (select round(avg(tr.star), 2) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg,\r\n"
+					   + "               rownum as rnum \r\n"
+					   + "          from tblTour t\r\n"
+					   + "         inner join tblCity c on t.cseq = c.seq\r\n"
+					   + "         inner join tblTourCategory tc on t.tcseq = tc.seq \r\n"
+					   + "         where c.seq = ?)\r\n"
+					   + "  where rnum between ? and ? order by likeCnt desc";
 			
 			pstat = conn.prepareStatement(sql);
 			
-			pstat.setString(1, seq);
+			pstat.setString(1, map.get("seq"));
+			pstat.setString(2, map.get("begin"));
+			pstat.setString(3, map.get("end"));
 			
 			rs = pstat.executeQuery();
 			
@@ -63,7 +72,7 @@ public class TourDAO {
 				TourDTO dto = new TourDTO();
 				
 				dto.setSeq(rs.getString("seq"));
-				dto.setPlaceName(rs.getString("placeName"));
+				dto.setPlaceName(rs.getString("placename"));
 				dto.setAddress(rs.getString("address"));
 				dto.setOpen(rs.getString("open"));
 				dto.setClose(rs.getString("close"));
@@ -134,7 +143,7 @@ public class TourDAO {
 			if(rs.next()) {
 			
 				dto.setSeq(rs.getString("seq"));
-				dto.setPlaceName(rs.getString("placeName"));
+				dto.setPlaceName(rs.getString("placename"));
 				dto.setAddress(rs.getString("address"));
 				dto.setOpen(rs.getString("open"));
 				dto.setClose(rs.getString("close"));
@@ -339,7 +348,7 @@ public class TourDAO {
 				TourDTO tdto = new TourDTO();
 				
 				tdto.setSeq(rs.getString("seq"));
-				tdto.setPlaceName(rs.getString("placeName"));
+				tdto.setPlaceName(rs.getString("placename"));
 				tdto.setAddress(rs.getString("address"));
 				tdto.setOpen(rs.getString("open"));
 				tdto.setClose(rs.getString("close"));
@@ -410,7 +419,7 @@ public class TourDAO {
 				TourDTO tdto = new TourDTO();
 				
 				tdto.setSeq(rs.getString("seq"));
-				tdto.setPlaceName(rs.getString("placeName"));
+				tdto.setPlaceName(rs.getString("placename"));
 				tdto.setAddress(rs.getString("address"));
 				tdto.setOpen(rs.getString("open"));
 				tdto.setClose(rs.getString("close"));
@@ -631,6 +640,38 @@ public class TourDAO {
 		
 		return null;
 	}
+
+	
+	public int getTourlistCnt() {
+
+		try {
+			
+			stat = conn.createStatement();
+			
+			String sql = "select count(*) as cnt from tblTour";
+			
+			rs = stat.executeQuery(sql);
+			
+			int result = 0;
+			if(rs.next()) {
+				result = rs.getInt("cnt");
+			}
+			
+			rs.close();
+			stat.close();
+			conn.close();
+			
+			return result;
+			
+		} catch (Exception e) {
+			System.out.println("TourDAO.getTourlistCnt");
+			e.printStackTrace();
+		}
+		
+		return 0;
+	}
+	/* -------------------------------------------------------------- 박채은 --------------------------------------------------------------------- */
+
 
 }
 

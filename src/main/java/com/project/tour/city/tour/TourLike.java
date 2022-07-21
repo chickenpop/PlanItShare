@@ -12,13 +12,13 @@ import javax.servlet.http.HttpSession;
 
 import com.project.tour.dto.TourLikeDTO;
 import com.project.tour.dto.UserDTO;
+import com.project.tour.plan.PlanDAO;
 
 @WebServlet("/city/tourlike.do")
 public class TourLike extends HttpServlet {
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {		
 	}
 
 	@Override

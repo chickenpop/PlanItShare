@@ -24,22 +24,25 @@ commit;
 
 -- 인기 관광명소 목록조회
 select
-       t.seq, 
-       t.placename, 
-       t.address, 
-       t.open, 
-       t.close, 
-       t.image, 
-       t.cseq, 
-       tc.category, 
-       (select count(*) from tblLikeTour lt where lt.tseq = t.seq) as likeCnt, 
-       (select count(*) from tblTourReview tr where tr.tseq = t.seq) as reviewCnt, 
-       (select round(avg(tr.star), 2) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg
-  from tblTour t 
- inner join tblCity c on t.cseq = c.seq
- inner join tblTourCategory tc on t.tcseq = tc.seq 
- where c.seq = 1 order by likeCnt desc;
- 
+       *
+  from (select 
+               t.seq, 
+               t.placename, 
+               t.address, 
+               t.open, 
+               t.close, 
+               t.image, 
+               t.cseq, 
+               tc.category, 
+               (select count(*) from tblLikeTour lt where lt.tseq = t.seq) as likeCnt, 
+               (select count(*) from tblTourReview tr where tr.tseq = t.seq) as reviewCnt, 
+               (select round(avg(tr.star), 2) from tblTourReview tr where tr.tseq = t.seq) as reviewAvg,
+               rownum as rnum 
+          from tblTour t
+          inner join tblCity c on t.cseq = c.seq
+          inner join tblTourCategory tc on t.tcseq = tc.seq 
+          where c.seq = 1)
+  where rnum between 1 and 10 order by likeCnt desc;
  
 -- 인기 관광명소 단건조회
 select
@@ -59,6 +62,10 @@ select
  inner join tblTourCategory tc on t.tcseq = tc.seq 
  where t.seq = 1 and c.seq = 1 order by likeCnt desc;
 
+-- 관광명소 총 개수
+select count(*) as cnt from tblTour;
+
+-- 페이지
 
 -- 관광명소 리뷰 테스트 insert
 insert into tblTourReview (seq, content, star, tseq, id, image) values (seqTourReview.nextVal, '나쁘지 않았어요', 4.0, 1,'chae', null);
@@ -128,7 +135,7 @@ rollback;
 
 select count(*) as cnt from tblLikeTour where tseq = 1 and id = 'chae';
 
--- 숙소 관련 퀴리문(서영님)
+-- 숙소 관련 퀴리문
 create or replace view vwTour
 as
 select

@@ -13,19 +13,20 @@ import com.project.tour.dto.PlanDTO;
 public class PlanDAO {
 
 	Connection conn;
-	PreparedStatement pstmt;
+	PreparedStatement pstat;
 	Statement stat;
 	ResultSet rs;
 	
+	/* -------------------------------------------------------------- 박채은 --------------------------------------------------------------------- */
 	public PlanDTO getPlan(String seq) {
 		try {
 			
 			conn = DBUtil.open();
 			
 			String sql = "select p.*, (select count(*) from tblLikePlan lp where p.seq = lp.pseq) as likecnt, (select profile from tblUser u where u.id = p.author) as author_profile, c.name from tblPlan p inner join tblCity c on p.cseq = c.seq where p.seq = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, seq);
-			rs = pstmt.executeQuery();
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, seq);
+			rs = pstat.executeQuery();
 
 			PlanDTO dto = new PlanDTO();
 			
@@ -64,9 +65,9 @@ public class PlanDAO {
 			conn = DBUtil.open();
 			
 			String sql = "select d.day, df.regdate, f.name, f.address, f.image, f.open, f.close, f.lat, f.lng, fc.category from tblDaily d inner join tblDailyFood df on df.dseq = d.seq inner join tblFood f on df.fseq = f.seq inner join tblFoodCategory fc on f.fcseq =fc.seq where pseq = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, seq);
-			rs = pstmt.executeQuery();
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, seq);
+			rs = pstat.executeQuery();
 
 			while(rs.next()) {
 				
@@ -101,9 +102,9 @@ public class PlanDAO {
 			conn = DBUtil.open();
 			
 			String sql = "select d.day, dt.regdate, t.placename, t.address, t.image, t.open, t.close, t.lat, t.lng, tc.category from tblDaily d inner join tblDailyTour dt on dt.dseq = d.seq inner join tblTour t on dt.tseq = t.seq inner join tblTourCategory tc on t.tcseq =tc.seq where pseq = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, seq);
-			rs = pstmt.executeQuery();
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, seq);
+			rs = pstat.executeQuery();
 			
 			while(rs.next()) {
 				
@@ -138,9 +139,9 @@ public class PlanDAO {
 			conn = DBUtil.open();
 			
 			String sql = "select d.day, dl.regdate, l.name, l.address, l.image, l.checkin, l.checkout, l.lat, l.lng, lc.category from tblDaily d inner join tblDailyLodging dl on dl.dseq = d.seq inner join tblLodging l on dl.lseq = l.seq inner join tblLodgingCategory lc on l.lcseq =lc.seq where pseq = ?";
-			pstmt = conn.prepareStatement(sql);
-			pstmt.setString(1, seq);
-			rs = pstmt.executeQuery();
+			pstat = conn.prepareStatement(sql);
+			pstat.setString(1, seq);
+			rs = pstat.executeQuery();
 			
 			while(rs.next()) {
 				
@@ -167,5 +168,6 @@ public class PlanDAO {
 			DBUtil.close();
 		}
 	}
+	/* -------------------------------------------------------------- 박채은 --------------------------------------------------------------------- */
 	
 }
