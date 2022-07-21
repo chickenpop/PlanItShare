@@ -46,8 +46,6 @@ public class UserList extends HttpServlet {
 		
 		ArrayList<UserDTO> list = dao.getUserList(map);
 		
-		dao = new AdminDAO();
-		
 		totalCnt = dao.getUserCnt();
 		totalPage = (int)Math.ceil((double)totalCnt / pageCnt);
 		

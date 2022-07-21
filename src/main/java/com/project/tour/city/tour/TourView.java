@@ -33,7 +33,6 @@ public class TourView extends HttpServlet {
 		
 		TourDTO dto = dao.getTourOne(seq, cseq);// 관광명소 상세내용
 		
-		dao = new TourDAO();
 		ArrayList<TourReviewDTO> rlist = dao.getTourReviewList(seq);
 		
 		// 여행지 정보

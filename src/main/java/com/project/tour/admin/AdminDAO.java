@@ -61,11 +61,7 @@ public class AdminDAO {
 				list.add(dto);
 				
 			}
-			
-			rs.close();
-			pstat.close();
-			conn.close();
-			
+						
 			return list;
 			
 		} catch (Exception e) {
@@ -96,11 +92,7 @@ public class AdminDAO {
 			int result = 0;
 			if(rs.next()) {
 				result = rs.getInt("cnt");
-			}
-			
-			rs.close();
-			stat.close();
-			conn.close();
+			}			
 			
 			return result;
 			

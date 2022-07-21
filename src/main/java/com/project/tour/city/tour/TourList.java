@@ -51,7 +51,7 @@ public class TourList extends HttpServlet {
 		totalCnt = dao.getTourlistCnt();
 		totalPage = (int)Math.ceil((double)totalCnt / pageCnt);
 		
-String pagebar = "";
+        String pagebar = "";
 		
 		int pageSize = 10;	// 보이는 페이지 개수
 		int n = 0;			// 페이지 번호
@@ -120,7 +120,6 @@ String pagebar = "";
 		
 		
 		// 관광명소 
-		dao = new TourDAO();
 		map.put("seq", seq + "");
 		
 		ArrayList<TourDTO> list = dao.getTourlist(map);

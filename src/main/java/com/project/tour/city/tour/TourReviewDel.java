@@ -35,7 +35,6 @@ public class TourReviewDel extends HttpServlet {
 			
 		}
 		
-		dao = new TourDAO();
 		int result = dao.delTourReview(seq);
 		
 		resp.setCharacterEncoding("UTF-8");

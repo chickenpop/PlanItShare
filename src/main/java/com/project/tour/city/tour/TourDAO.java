@@ -85,11 +85,7 @@ public class TourDAO {
 				
 				list.add(dto);
 			}
-			
-			rs.close();
-			pstat.close();
-			conn.close();
-			
+						
 			return list;
 			
 		} catch (Exception e) {
@@ -154,11 +150,7 @@ public class TourDAO {
 				dto.setReviewAvg(rs.getString("reviewAvg"));
 				dto.setCseq(rs.getString("cseq"));
 			}
-			
-			rs.close();
-			pstat.close();
-			conn.close();
-			
+						
 			return dto;
 			
 		} catch (Exception e) {
@@ -212,12 +204,7 @@ public class TourDAO {
 				
 				list.add(dto);
 				
-			}
-			
-			rs.close();
-			pstat.close();
-			conn.close();
-			
+			}			
 			return list;
 			
 		} catch (Exception e) {
@@ -254,9 +241,6 @@ public class TourDAO {
 			
 			int result = pstat.executeUpdate();
 			
-			pstat.close();
-			conn.close();
-			
 			return result;
 			
 		} catch (Exception e) {
@@ -287,9 +271,6 @@ public class TourDAO {
 			pstat.setString(1, seq);
 			
 			int result =  pstat.executeUpdate();
-			
-			pstat.close();
-			conn.close();
 			
 			return result;
 			
@@ -484,10 +465,6 @@ public class TourDAO {
 				state = 1;
 			}
 			
-			rs.close();
-			pstat.close();
-			conn.close();
-			
 			return state;
 			
 		} catch (Exception e) {
@@ -551,10 +528,6 @@ public class TourDAO {
 			pstat.setString(2, dto.getTseq());
 			
 			result = pstat.executeUpdate();
-			
-			rs.close();
-			pstat.close();
-			conn.close();
 			
 			return result;
 			
@@ -627,10 +600,6 @@ public class TourDAO {
 				
 			}
 			
-			rs.close();
-			pstat.close();
-			conn.close();
-			
 			return dto;
 			
 		} catch (Exception e) {
@@ -656,11 +625,7 @@ public class TourDAO {
 			if(rs.next()) {
 				result = rs.getInt("cnt");
 			}
-			
-			rs.close();
-			stat.close();
-			conn.close();
-			
+						
 			return result;
 			
 		} catch (Exception e) {
