@@ -135,7 +135,7 @@ rollback;
 
 select count(*) as cnt from tblLikeTour where tseq = 1 and id = 'chae';
 
--- 숙소 관련 퀴리문
+-- 관광명소 관련 퀴리문
 create or replace view vwTour
 as
 select

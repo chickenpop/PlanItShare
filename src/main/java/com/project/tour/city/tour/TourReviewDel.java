@@ -27,7 +27,7 @@ public class TourReviewDel extends HttpServlet {
 		
 		if(dto.getImage() != null || dto.getImage() != "") {
 			
-			String path = req.getRealPath("/asset/image");
+			String path = req.getRealPath("/userimage/tour");
 			path += "/" + dto.getImage();
 			
 			File file = new File(path);

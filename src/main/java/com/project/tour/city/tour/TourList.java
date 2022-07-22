@@ -15,7 +15,7 @@ import com.project.tour.city.CityDAO;
 import com.project.tour.dto.CityDTO;
 import com.project.tour.dto.TourDTO;
 
-@WebServlet("/city/tourlist.do")
+@WebServlet("/city/tour.do")
 public class TourList extends HttpServlet {
 
 	@Override
@@ -73,7 +73,7 @@ public class TourList extends HttpServlet {
 					);
 		} else {
 			pagebar += String.format(" <li class=\"page-item\">\r\n"
-					+ "		      <a class=\"page-link\" href=\"/planitshare/city/tourlist.do?cseq=%s&page=%d\" aria-label=\"Previous\">\r\n"
+					+ "		      <a class=\"page-link\" href=\"/planitshare/city/tour.do?cseq=%s&page=%d\" aria-label=\"Previous\">\r\n"
 					+ "		        <span aria-hidden=\"true\">&laquo;</span>\r\n"
 					+ "		      </a>\r\n"
 					+ "		    </li> "
@@ -87,7 +87,7 @@ public class TourList extends HttpServlet {
 				pagebar += String.format(" <li class=\"page-item active\"><a class=\"page-link\" href=\"#!\">%d</a></li> "
 						, n);
 			} else {
-				pagebar += String.format(" <li class=\"page-item\"><a class=\"page-link\" href=\"/planitshare/city/tourlist.do?cseq=%s&page=%d\">%d</a></li> "
+				pagebar += String.format(" <li class=\"page-item\"><a class=\"page-link\" href=\"/planitshare/city/tour.do?cseq=%s&page=%d\">%d</a></li> "
 						, seq
 						, n
 						, n);
@@ -106,7 +106,7 @@ public class TourList extends HttpServlet {
 					);
 		} else {
 			pagebar += String.format(" <li class=\"page-item\">\r\n"
-					+ "		      <a class=\"page-link\" href=\"/planitshare/city/tourlist.do?cseq=%s&page=%d\" aria-label=\"Next\">\r\n"
+					+ "		      <a class=\"page-link\" href=\"/planitshare/city/tour.do?cseq=%s&page=%d\" aria-label=\"Next\">\r\n"
 					+ "		        <span aria-hidden=\"true\">&raquo;</span>\r\n"
 					+ "		      </a>\r\n"
 					+ "		    </li> "
