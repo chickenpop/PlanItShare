@@ -225,7 +225,7 @@ public class AdminDAO {
 			String sql = "select\r\n"
 					      + "    to_date(?, 'yy-mm-dd') + (level-1) as regdate\r\n"
 					      + "from dual\r\n"
-					      + "    connect by level <= (to_date(?, 'yy-mm-dd') - to_date(?, 'yy-mm-dd') + 1)";
+					      + "    connect by level <= (to_date(?, 'yy-mm-dd') - to_date(?, 'yy-mm-dd'))";
 			
 			pstat = conn.prepareStatement(sql);
 			

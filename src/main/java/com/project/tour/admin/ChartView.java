@@ -33,7 +33,7 @@ public class ChartView extends HttpServlet {
 		// 차트 시작날짜, 끝날짜
 		nowDate.add(nowDate.DATE, 1);
 		String end = sdf.format(nowDate.getTime());
-		nowDate.add(nowDate.DATE, -6);
+		nowDate.add(nowDate.DATE, -7);
 		String begin = sdf.format(nowDate.getTime());
 		
 		map.put("begin", begin);
@@ -76,7 +76,7 @@ public class ChartView extends HttpServlet {
 		mdata += "]";
 		
 		// 여자 유저
-		nowDate.add(nowDate.DATE, -6);
+		nowDate.add(nowDate.DATE, -7);
 		begin = sdf.format(nowDate.getTime());
 		
 		String fdata = "[";
