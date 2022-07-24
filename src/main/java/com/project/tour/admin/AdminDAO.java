@@ -34,9 +34,9 @@ public class AdminDAO {
 	 */
 	public ArrayList<UserDTO> getUserList(HashMap<String, String> map) {
 
-		try {
+		try {	
 			
-			String sql = "select * from (select id, name, gender, tel, active, to_char(regdate, 'yyyy.mm.dd') as regdate, rownum as rnum from tblUser u) where rnum between ? and ?";
+			String sql = "select * from (select rownum as rnum, a.* from (select id, name, gender, tel, active, to_char(regdate, 'yyyy.mm.dd') as regdate from tblUser u order by regdate desc) a)  where rnum between ? and ?";
 			
 			pstat = conn.prepareStatement(sql);
 			
@@ -53,7 +53,7 @@ public class AdminDAO {
 				
 				dto.setId(rs.getString("id"));
 				dto.setName(rs.getString("name"));
-				dto.setGender(rs.getString("gender"));
+				dto.setGender(rs.getString("gender").equals("m") ? "남자" : "여자");
 				dto.setTel(rs.getString("tel"));
 				dto.setActive(rs.getString("active"));
 				dto.setRegdate(rs.getString("regdate"));

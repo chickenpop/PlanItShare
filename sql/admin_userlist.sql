@@ -34,8 +34,11 @@ commit;
 rollback;
 
 -- 회원 탈퇴, active 비활성화
-delete tblUser where id = 'Jennifer';
+delete tblUser where id = 'test1';
+delete tblUser where id = 'test2';
+delete tblUser where id = 'test3';
 
+update tblUser set name = 'not used', pw = 'not used', tel = 'not used', profile = 'not used', regdate = sysdate, gender = 'not used', active='n' where id = '아이디';
 
 -- 테스트용 회원 활성화
 update tblUser set active = 'y' where id = 'test10';
