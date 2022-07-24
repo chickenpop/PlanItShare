@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class InvitationDTO {
+	
    private String seq;
    private String pseq;
    private String host;
@@ -11,4 +12,6 @@ public class InvitationDTO {
    private String regdate;
    
    private String name;
+   
+   
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class TourCategoryDTO {
 
-   private String seq;
-   private String category;
-   
+	private String seq;
+	private String category;
+	
 }

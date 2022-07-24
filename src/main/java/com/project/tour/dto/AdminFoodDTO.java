@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class AdminFoodDTO {
+	
 	private String seq;
 	private String city;
 	private String category;
@@ -12,4 +13,5 @@ public class AdminFoodDTO {
 	private String hasImage;
 	private String open;
 	private String close;
+
 }

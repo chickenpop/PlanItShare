@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.project.tour.dto.CityDTO;
+import com.project.tour.dto.DistrinctDTO;
+
 
 @WebServlet("/city.do")
 public class CityMainPage extends HttpServlet {
@@ -21,25 +23,27 @@ public class CityMainPage extends HttpServlet {
 		req.setCharacterEncoding("UTF-8");
 		
 		String cseq = req.getParameter("cseq");
+		String search = req.getParameter("search");
 		
 		CityDAO dao = new CityDAO();
 		
+		ArrayList<CityDTO> list = dao.findMainCity();
+		ArrayList<CityDTO> rlist = dao.findRecommendCity();
+		ArrayList<DistrinctDTO> dlist = dao.findSubCity();
+		
+		req.setAttribute("list", list);
+		req.setAttribute("rlist", rlist);
+		req.setAttribute("dlist", dlist);
+		
 		if (cseq == null) { // 여행지 메인 페이지일 경우
 			
-			ArrayList<CityDTO> list = dao.findMainCity();
-			req.setAttribute("list", list);
-		
+			
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/city/city.jsp");
 			dispatcher.forward(req, resp);
 			
 		} else { // 여행지 상세 페이지
 			
-			CityDTO dto = dao.findCity(cseq);
-			
-			req.setAttribute("dto", dto);
-			
-			RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/city/citydetail.jsp");
-			dispatcher.forward(req, resp);
+			resp.sendRedirect("/planitshare/citydetail.do?cseq=" + cseq);
 
 		}
 
@@ -47,6 +51,36 @@ public class CityMainPage extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+				req.setCharacterEncoding("UTF-8");
+				
+				//2.
+				String city = req.getParameter("city");
+				
+				CityDAO dao = new CityDAO(); 
+				
+				String cseq = dao.getCitySeq(city);
+				
+				if(cseq != null) { // 도시명 검색 성공
+					
+					resp.sendRedirect("/planitshare/city.do?cseq=" + cseq);
+		  
+					
+				}
+				else { 
+	
+					ArrayList<CityDTO> list = dao.findMainCity();
+					ArrayList<CityDTO> rlist = dao.findRecommendCity();
+					ArrayList<DistrinctDTO> dlist = dao.findSubCity();
+					
+					req.setAttribute("list", list);
+					req.setAttribute("rlist", rlist);
+					req.setAttribute("dlist", dlist);
+					
+					req.setAttribute("searchError", "y");
+	                RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/views/city/city.jsp");
+	                dispatcher.forward(req, resp);
+		           
+		        }
 
 	}
 
