@@ -137,6 +137,9 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
+*.png
+*.jpg
+
 # End
 
 /build/
